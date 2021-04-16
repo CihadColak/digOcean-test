@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -6,9 +7,23 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
+  constructor(private http: HttpClient) {}
   title = 'digoceantest-fe';
   numberOfClicks = 0;
+  serverResponse;
   increment() {
     this.numberOfClicks++;
+  }
+
+  sendHiToServer() {
+    this.http.get('http://localhost:3000').subscribe(
+      (data) => {
+        this.serverResponse = JSON.stringify(data);
+      },
+      (error) => {
+        console.log('get error');
+        this.serverResponse = JSON.stringify(error);
+      }
+    );
   }
 }
